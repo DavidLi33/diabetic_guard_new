@@ -3,16 +3,16 @@ plugins {
 }
 
 android {
-    namespace = "com.example.project2"
+    namespace = "com.example.diabeticguard"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.project2"
+        applicationId = "com.example.diabeticguard"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,8 +34,14 @@ android {
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:18.0.0")
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition-common:+")
+    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.firebase:firebase-auth:19.2.0")
+    implementation("com.google.firebase:firebase-database:20.0.3")
+    implementation("com.google.firebase:firebase-firestore:24.0.1")
     implementation("com.opencsv:opencsv:5.8")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     testImplementation("junit:junit:4.13.2")

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTintMode="add"
+    tools:context="com.example.diabeticguard.HomePage">
+
+    <TextView
+        android:id="@+id/cameraHomePageLogo"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="66dp"
+        android:text="App-Pill"
+        android:textAlignment="center"
+        android:textColor="#E91E63"
+        android:textSize="48sp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cameraHomePageImage"
+        android:layout_width="331dp"
+        android:layout_height="341dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraHomePageLogo"
+        app:srcCompat="@drawable/pinkcamera2" />
+
+    <Button
+        android:id="@+id/cameraHomePageDictate"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#F46565"
+        android:text="DICTATE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/cameraHomePageText"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:backgroundTintMode="src_atop"
+        android:outlineProvider="bounds"
+        android:shadowColor="#000000"
+        android:shadowRadius="0"
+        android:text="Once you have taken an image, press dictate"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:typeface="monospace"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/cameraHomePageDictate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraHomePageImage"
+        app:layout_constraintVertical_bias="0.704"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

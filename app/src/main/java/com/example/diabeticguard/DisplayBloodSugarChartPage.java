@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -111,6 +112,14 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
                 // Let it be empty only
             }
         });
+
+        //Making Banner2 taller
+        RelativeLayout bannerContainer2 = findViewById(R.id.bannerContainer2);
+        int currentHeight = bannerContainer2.getLayoutParams().height;
+        int newHeight = currentHeight + (int) getResources().getDimension(R.dimen.dp_100);
+
+        bannerContainer2.getLayoutParams().height = newHeight;
+
     }
 
     @Override

@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Banner Text -->
+        <!-- Top Banner -->
         <TextView
             android:id="@+id/bannerText"
             android:layout_width="match_parent"
@@ -55,7 +55,7 @@
         android:background="@color/darkish_blue"
         app:layout_constraintTop_toBottomOf="@id/bannerContainer">
 
-        <!-- Banner Text -->
+        <!-- Banner displaying "Most Recent Measurement" -->
         <TextView
             android:id="@+id/banner2Text1"
             android:layout_width="match_parent"
@@ -75,6 +75,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.625" />
 
+        <!--displaying the most recent measurement -->
         <TextView
             android:id="@+id/banner2Text2"
             android:layout_width="wrap_content"
@@ -83,10 +84,24 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="This is a variable"
             android:fontFamily="sans-serif-light"
-            android:padding="16dp"
+            android:padding="1dp"
             android:text="150"
             android:textColor="#ffffff"
             android:textSize="48sp" />
+
+        <!--units (mmol/L) -->
+        <TextView
+            android:id="@+id/banner2Text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/banner2Text2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1dp"
+            android:fontFamily="sans-serif-light"
+            android:padding="1dp"
+            android:text="mmol/L"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

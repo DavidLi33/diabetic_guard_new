@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class DisplayBloodSugarChartPage extends AppCompatActivity implements View.OnClickListener {
 
@@ -135,6 +137,7 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;
             // Flag to skip the first line of the CSV file that is header
+            String mostRecent;
             boolean isFirstLine = true;
             while ((nextLine = reader.readNext()) != null) {
                 if (isFirstLine) {
@@ -152,6 +155,10 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
                    // float sales = Float.parseFloat(nextLine[1].replace(",", "").trim());
 
                     addEntryToChart(date, time, level);
+
+                    TextView banner2Text2 = findViewById(R.id.banner2Text2);
+
+                    banner2Text2.setText(String.valueOf(level));
                 }
             }
         } catch (IOException | CsvValidationException e) {

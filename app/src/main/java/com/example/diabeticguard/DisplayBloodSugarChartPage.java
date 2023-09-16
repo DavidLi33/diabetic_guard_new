@@ -5,7 +5,9 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class DisplayBloodSugarChartPage extends AppCompatActivity implements View.OnClickListener {
 
@@ -109,6 +112,14 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
                 // Let it be empty only
             }
         });
+
+        //Making Banner2 taller
+        RelativeLayout bannerContainer2 = findViewById(R.id.bannerContainer2);
+        int currentHeight = bannerContainer2.getLayoutParams().height;
+        int newHeight = currentHeight + (int) getResources().getDimension(R.dimen.dp_100);
+
+        bannerContainer2.getLayoutParams().height = newHeight;
+
     }
 
     @Override
@@ -135,6 +146,7 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;
             // Flag to skip the first line of the CSV file that is header
+            String mostRecent;
             boolean isFirstLine = true;
             while ((nextLine = reader.readNext()) != null) {
                 if (isFirstLine) {
@@ -152,6 +164,10 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
                    // float sales = Float.parseFloat(nextLine[1].replace(",", "").trim());
 
                     addEntryToChart(date, time, level);
+
+                    TextView banner2Text2 = findViewById(R.id.banner2Text2);
+
+                    banner2Text2.setText(String.valueOf(level));
                 }
             }
         } catch (IOException | CsvValidationException e) {

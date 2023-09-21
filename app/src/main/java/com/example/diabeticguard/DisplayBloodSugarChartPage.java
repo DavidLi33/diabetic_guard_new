@@ -125,7 +125,7 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.banner:
+            case R.id.bannerLogo:
                 startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivity.class));
                 break;
             case R.id.displayChartButton:

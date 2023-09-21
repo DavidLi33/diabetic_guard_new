@@ -6,6 +6,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener{
-    private TextView banner, register;
+    private TextView register;
+    private ImageView banner;
     private EditText editFullName;
     private EditText editEmail;
     private EditText editPassword;
@@ -50,7 +52,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        banner = this.findViewById(R.id.logo);
+        banner = this.findViewById(R.id.bannerLogo);
         banner.setOnClickListener(this);
 
         register = this.findViewById(R.id.registerButton);
@@ -66,7 +68,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.banner:
+            case R.id.bannerLogo:
                 startActivity(new Intent(RegisterUser.this, MainActivity.class));
                 break;
             case R.id.registerButton:

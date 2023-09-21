@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Locale;
 
 public class LoginUser extends AppCompatActivity implements View.OnClickListener{
-    private TextView banner, register;
+    private TextView register;
+    private ImageView banner;
     private EditText editEmail;
     private EditText editPassword;
     private ProgressBar progressBar;
@@ -46,7 +48,7 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
 
         mAuth = FirebaseAuth.getInstance();
 
-        banner = this.findViewById(R.id.loginLogo);
+        banner = this.findViewById(R.id.bannerLogo);
         banner.setOnClickListener(this);
 
         editEmail = findViewById(R.id.loginEmail);
@@ -115,7 +117,7 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.banner:
+            case R.id.bannerLogo:
                 startActivity(new Intent(LoginUser.this, MainActivity.class));
                 break;
             case R.id.loginButton:

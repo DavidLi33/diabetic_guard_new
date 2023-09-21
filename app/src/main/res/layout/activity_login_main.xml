@@ -7,20 +7,17 @@
     android:layout_height="match_parent"
     tools:context = "com.example.diabeticguard.LoginUser">
 
-    <TextView
-        android:id="@+id/loginLogo"
-        android:layout_width="240dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="66dp"
-        android:text="App-Pill"
-        android:textAlignment="center"
-        android:textColor="#E91E63"
-        android:textSize="48dp"
-        android:typeface="monospace"
+    <ImageView
+        android:id="@+id/bannerLogo"
+        android:layout_width="309dp"
+        android:layout_height="190dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="48dp"
+        android:src="@drawable/diabetic_guard_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <EditText
         android:id="@+id/loginEmail"
@@ -36,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/bannerLogo" />
 
     <EditText
         android:id="@+id/loginPassword"

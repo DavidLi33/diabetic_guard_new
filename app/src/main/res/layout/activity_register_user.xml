@@ -7,21 +7,17 @@
     android:visibility="visible"
     tools:context="com.example.diabeticguard.RegisterUser">
 
-    <TextView
-        android:id="@+id/logo"
-        android:layout_width="240dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginBottom="208dp"
-        android:fontFamily="monospace"
-        android:text="App-Pill"
-        android:textAlignment="center"
-        android:textColor="#E91E63"
-        android:textSize="48sp"
+    <ImageView
+        android:id="@+id/bannerLogo"
+        android:layout_width="309dp"
+        android:layout_height="190dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="48dp"
+        android:src="@drawable/diabetic_guard_logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <EditText
         android:id="@+id/email"
@@ -37,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/bannerLogo" />
 
     <EditText
         android:id="@+id/fullname"
@@ -54,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintTop_toBottomOf="@+id/bannerLogo"
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText

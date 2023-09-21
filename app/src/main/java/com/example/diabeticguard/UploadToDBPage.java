@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +13,8 @@ import java.util.Locale;
 
 public class UploadToDBPage extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView homePageLogo, displayChart, uploadToDB, searchButton, scanButton;
+    private ImageView banner;
+    private TextView displayChart, uploadToDB, searchButton, scanButton;
     private TextToSpeech tts;
 
     @Override
@@ -28,7 +30,7 @@ public class UploadToDBPage extends AppCompatActivity implements View.OnClickLis
                 }
             }
         });
-        homePageLogo = findViewById(R.id.homePageLogo);
+        banner = findViewById(R.id.bannerLogo);
 
         displayChart = (TextView) this.findViewById(R.id.displayChartButton);
         displayChart.setOnClickListener(this);

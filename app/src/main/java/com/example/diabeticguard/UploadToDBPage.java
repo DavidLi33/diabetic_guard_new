@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-public class HomePage extends AppCompatActivity implements View.OnClickListener{
+public class UploadToDBPage extends AppCompatActivity implements View.OnClickListener{
 
     private TextView homePageLogo, displayChart, uploadToDB, searchButton, scanButton;
     private TextToSpeech tts;
@@ -47,10 +47,10 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.homePageScan:
-                startActivity(new Intent(HomePage.this, CameraHomePage.class));
+                startActivity(new Intent(UploadToDBPage.this, CameraHomePage.class));
                 break;
             case R.id.homePageSearch:
-                startActivity(new Intent(HomePage.this, SearchHomePage.class));
+                startActivity(new Intent(UploadToDBPage.this, SearchHomePage.class));
                 break;
             case R.id.displayChartButton:
                 startActivity(new Intent(this, DisplayBloodSugarChartPage.class));
@@ -61,7 +61,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
         }
     }
     public void speak(String s){
-        tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, HomePage.this.hashCode()+"");
+        tts.speak(s, TextToSpeech.QUEUE_FLUSH, null, UploadToDBPage.this.hashCode()+"");
     }
     public void onPause(){
         if (tts != null){

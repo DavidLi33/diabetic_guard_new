@@ -22,9 +22,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/app_pill_logo"
+        android:icon="@mipmap/diabetic_guard_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_pill_logo_round"
+        android:roundIcon="@mipmap/diabetic_guard_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.DiabeticGuard">
         <receiver android:name="com.example.diabeticguard.AlarmBroadcastReceiver" >
@@ -43,6 +43,9 @@
             android:exported="false" />
         <activity
             android:name="com.example.diabeticguard.DisplayBloodSugarChartPage"
+            android:exported="false" />
+        <activity
+            android:name="com.example.diabeticguard.UploadToDBPage"
             android:exported="false" />
 
         <provider

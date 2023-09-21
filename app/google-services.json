@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "934488110190",
+    "project_id": "apppill-a1b37",
+    "storage_bucket": "apppill-a1b37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934488110190:android:40be4bd2a3a51ccd94e27f",
+        "android_client_info": {
+          "package_name": "com.example.diabeticguard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934488110190-jpcc7r6bl99ojcn20md2of1m5068mk8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw-gO-w4AGIGPRGGmAD8ga6FnZ8yPhLGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934488110190-jpcc7r6bl99ojcn20md2of1m5068mk8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

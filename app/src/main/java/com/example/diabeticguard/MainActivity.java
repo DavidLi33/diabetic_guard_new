@@ -13,7 +13,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView register, login, displayChart;
+    private TextView register, login, displayChart, uploadToDB;
     private TextToSpeech tts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onInit(int i) {
                 if (i != TextToSpeech.ERROR){
                     tts.setLanguage(Locale.US);
-                    speak("Supradata Diabetic Guard, Register or Login");
+                    speak("Diabetic Guard, Register or Login");
                 }
             }
         });
@@ -35,8 +35,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         login = (TextView) this.findViewById(R.id.mainLoginButton);
         login.setOnClickListener(this);
 
-        displayChart = (TextView) this.findViewById(R.id.displayChartButton);
-        displayChart.setOnClickListener(this);
+//        displayChart = (TextView) this.findViewById(R.id.displayChartButton);
+//        displayChart.setOnClickListener(this);
+//
+//        uploadToDB = (TextView) this.findViewById(R.id.uploadToDBButton);
+//        uploadToDB.setOnClickListener(this);
     }
 
     @Override
@@ -48,9 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.mainLoginButton:
                 startActivity(new Intent(this, LoginUser.class));
                 break;
-            case R.id.displayChartButton:
-                startActivity(new Intent(this, DisplayBloodSugarChartPage.class));
-                break;
+//            case R.id.displayChartButton:
+//                startActivity(new Intent(this, DisplayBloodSugarChartPage.class));
+//                break;
+//            case R.id.uploadToDBButton:
+//                startActivity(new Intent(this, UploadToDBPage.class));
+//                break;
         }
     }
     public void onPause(){

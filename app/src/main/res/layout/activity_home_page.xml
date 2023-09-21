@@ -11,7 +11,7 @@
         android:layout_width="240dp"
         android:layout_height="100dp"
         android:layout_marginTop="66dp"
-        android:text="App-Pill"
+        android:text="Diabetic Guard"
         android:textAlignment="center"
         android:textColor="#E91E63"
         android:textSize="48sp"
@@ -22,16 +22,47 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/displayChartButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="160dp"
+        android:backgroundTint="#F46565"
+        android:text="Display Chart"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homePageLogo" />
+
+    <Button
+        android:id="@+id/uploadToDBButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="#F46565"
+        android:text="Upload Data"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayChartButton"
+        app:layout_constraintVertical_bias="0.285" />
+
+    <Button
         android:id="@+id/homePageScan"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="#F46565"
         android:text="SCAN"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homePageLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/uploadToDBButton" />
 
     <Button
         android:id="@+id/homePageSearch"

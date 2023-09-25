@@ -13,7 +13,7 @@ import java.util.Locale;
 
 public class HomePage extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView bannerLogo;
+    private ImageView banner;
     private TextView displayChart, uploadToDB, searchButton, scanButton;
     private TextToSpeech tts;
 
@@ -30,12 +30,12 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         });
-        bannerLogo = findViewById(R.id.bannerLogo);
+        banner = findViewById(R.id.bannerLogo);
 
         displayChart = (TextView) this.findViewById(R.id.displayChartButton);
         displayChart.setOnClickListener(this);
 
-        uploadToDB = (TextView) this.findViewById(R.id.uploadToDBButton);
+        uploadToDB = (TextView) this.findViewById(R.id.uploadToDBButton1);
         uploadToDB.setOnClickListener(this);
 
         searchButton = findViewById(R.id.homePageSearch);
@@ -48,6 +48,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.bannerLogo:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
             case R.id.homePageScan:
                 startActivity(new Intent(HomePage.this, CameraHomePage.class));
                 break;
@@ -57,7 +60,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
             case R.id.displayChartButton:
                 startActivity(new Intent(this, DisplayBloodSugarChartPage.class));
                 break;
-            case R.id.uploadToDBButton:
+            case R.id.uploadToDBButton1:
                 startActivity(new Intent(this, UploadToDBPage.class));
                 break;
         }

@@ -13,49 +13,59 @@ import java.util.HashMap;
 public class DBController extends SQLiteOpenHelper {
     private static final String LOGCAT = null;
 
+    public static final String DATABASE_NAME = "diabeticguard.db";
+    public static final int DATABASE_VERSION = 1;
+    private static DBController instance;
+
+
+
     public static String tableTrackName = "tblTrack";
     public static String colDate = "Date";
     public static String colTime = "Time";
     public static String colLevel = "Level";
     public static String colIsFasting = "IsFasting";
 
-    public static String tableProfileName = "tblProfile";
-    public static String colUserId = "UserId";
-    public static String colUserName = "UserName";
-    public static String colGender = "Gender";
-    public static String colAge = "Age";
-    public static String colIsPregnent = "IsPregnant";
-    public static String colOtherRisks = "OtherRisks";
+//    public static String tableProfileName = "tblProfile";
+//    public static String colUserId = "UserId";
+//    public static String colUserName = "UserName";
+//    public static String colGender = "Gender";
+//    public static String colAge = "Age";
+//    public static String colIsPregnent = "IsPregnant";
+//    public static String colOtherRisks = "OtherRisks";
 
-
-    public DBController(Context applicationcontext) {
-
-        super(applicationcontext, "mydb.db", null, 1);  // creating DATABASE
-
-        Log.d(LOGCAT, "Created");
-
+    public DBController(Context context) {
+        super(context,DATABASE_NAME,null,DATABASE_VERSION);
+        this.getWritableDatabase(); //Force database open
     }
+//    public static DBController getInstance(Context context) {
+//        if (instance==null) {
+//            instance = new DBController(context);
+//        }
+//        return instance;
+//    }
+
 
 
     @Override
     public void onCreate(SQLiteDatabase database) {
 
-        String trackQuery, profileQuery, stardardQuery;
+        String createTableSql, profileQuery, stardardQuery;
 
-        trackQuery = "CREATE TABLE IF NOT EXISTS " + tableTrackName + "( " + colDate + " TEXT, " + colTime +
-                " TEXT, " + colLevel + " TEXT, " + colIsFasting + " TEXT)";
-        Log.e("create Query", trackQuery);
-        database.execSQL(trackQuery);
+        createTableSql = "CREATE TABLE IF NOT EXISTS " + tableTrackName + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + colDate + " TEXT, " + colTime +
+                " TEXT, " + colLevel + " TEXT ); ";
+        Log.i("create Query", createTableSql);
+
+        database.execSQL(createTableSql);
 
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
-        String query;
-        query = "DROP TABLE IF EXISTS " + tableTrackName;
-        database.execSQL(query);
-        onCreate(database);
+//        String query;
+//        query = "DROP TABLE IF EXISTS " + tableTrackName;
+//        database.execSQL(query);
+//        onCreate(database);
     }
 
 
@@ -64,7 +74,8 @@ public class DBController extends SQLiteOpenHelper {
         ArrayList<HashMap<String, String>> trackList;
         trackList = new ArrayList<HashMap<String, String>>();
         String selectQuery = "SELECT  * FROM " + tableTrackName;
-        SQLiteDatabase database = this.getWritableDatabase();
+        //SQLiteDatabase database = this.getWritableDatabase();
+        SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
@@ -76,9 +87,11 @@ public class DBController extends SQLiteOpenHelper {
                 map.put("b", cursor.getString(1));
                 map.put("c", cursor.getString(2));
                 trackList.add(map);
-                Log.e("dataofList", cursor.getString(0) + "," + cursor.getString(1) + "," + cursor.getString(2));
+                Log.i("dataofList", cursor.getString(0) + "," + cursor.getString(1) + "," + cursor.getString(2));
             } while (cursor.moveToNext());
         }
+        // at last closing our cursor and returning array list.
+        cursor.close();
         return trackList;
 
     }

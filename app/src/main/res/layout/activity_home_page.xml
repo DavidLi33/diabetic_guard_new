@@ -21,32 +21,28 @@
         android:id="@+id/displayChartButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginBottom="160dp"
         android:backgroundTint="#F46565"
         android:text="Display Chart"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bannerLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/bannerLogo"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/uploadToDBButton1"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginStart="104dp"
         android:layout_marginBottom="80dp"
         android:backgroundTint="#F46565"
         android:text="Upload Data"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/displayChartButton"
-        app:layout_constraintVertical_bias="0.285" />
+        app:layout_constraintVertical_bias="0.066" />
 
     <Button
         android:id="@+id/homePageScan"
@@ -56,7 +52,6 @@
         android:backgroundTint="#F46565"
         android:text="SCAN"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadToDBButton1" />
 
@@ -68,7 +63,6 @@
         android:backgroundTint="#F46565"
         android:text="SEARCH"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homePageScan" />
 </androidx.constraintlayout.widget.ConstraintLayout>

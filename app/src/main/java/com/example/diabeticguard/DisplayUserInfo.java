@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,7 +29,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.rpc.Help;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -127,7 +125,7 @@ public class DisplayUserInfo extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.UserInfoLogo:
-                startActivity(new Intent(DisplayUserInfo.this, MainActivity.class));
+                startActivity(new Intent(DisplayUserInfo.this, MainActivityLogin.class));
                 break;
             case R.id.UserInfoYes:
                 medicineLogUpdate();

@@ -126,13 +126,13 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bannerLogo:
-                startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivity.class));
+                startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivityLogin.class));
                 break;
-            case R.id.displayChartButton:
-                //TODO
-                startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivity.class));
-
-                break;
+//            case R.id.displayChartButton:
+//                //TODO
+//                startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivity.class));
+//
+//                break;
         }
     }
 

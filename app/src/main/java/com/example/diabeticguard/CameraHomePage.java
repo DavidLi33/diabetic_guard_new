@@ -43,8 +43,9 @@ import java.util.Locale;
 
 public class CameraHomePage extends AppCompatActivity implements View.OnClickListener{
 
+    private ImageView banner, cameraLogo;
     private Button dictate;
-    private TextView banner, description;
+    private TextView description;
     private Uri imageUri;
     private Text resultText;
     private MedicineDatabase medicineDatabase;
@@ -76,11 +77,11 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
         });
         description = findViewById(R.id.cameraHomePageText);
 
-        banner = findViewById(R.id.cameraHomePageLogo);
+        banner = findViewById(R.id.bannerLogo);
         banner.setOnClickListener(this);
 
-        display = findViewById(R.id.cameraHomePageImage);
-        display.setOnClickListener(this);
+        cameraLogo = findViewById(R.id.cameraHomePageImage);
+        cameraLogo.setOnClickListener(this);
 
         dictate = findViewById(R.id.cameraHomePageDictate);
         dictate.setOnClickListener(this);
@@ -169,7 +170,7 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(CameraHomePage.this, "Please take an image", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.cameraHomePageLogo:
+            case R.id.bannerLogo:
                 startActivity(new Intent(CameraHomePage.this, HomePage.class));
                 break;
         }

@@ -25,11 +25,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener{
-    private TextView register;
-    private ImageView banner;
-    private EditText editFullName;
-    private EditText editEmail;
-    private EditText editPassword;
+
+    private ImageView banner, register;
+    private EditText editFullName, editEmail,editPassword, editBirthYear, editGender ;
     private FirebaseFirestore db;
     private ProgressBar progressBar;
     private TextToSpeech tts;
@@ -62,6 +60,11 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         editEmail = findViewById(R.id.email);
         editPassword = findViewById(R.id.password);
 
+        editBirthYear = findViewById(R.id.birthyear);
+        editGender = findViewById(R.id.gender);
+
+        //TODO need to store other user profile in database, eg. name, age, gender ...
+
         progressBar = findViewById(R.id.registerProgressBar);
     }
 
@@ -69,7 +72,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bannerLogo:
-                startActivity(new Intent(RegisterUser.this, MainActivity.class));
+                startActivity(new Intent(RegisterUser.this, MainActivityLogin.class));
                 break;
             case R.id.registerButton:
                 registerUser();
@@ -113,7 +116,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                             db.collection("users").document(uid).set(user);
                             speak("User Registered Successfully");
                             Toast.makeText(RegisterUser.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterUser.this, MainActivity.class));
+                            startActivity(new Intent(RegisterUser.this, MainActivityLogin.class));
                         }
                         else{
                             speak("Failed to Register");

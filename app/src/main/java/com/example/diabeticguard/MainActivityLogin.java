@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,13 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
 
-public class LoginUser extends AppCompatActivity implements View.OnClickListener{
-    private TextView register;
+public class MainActivityLogin extends AppCompatActivity implements View.OnClickListener{
+
     private ImageView banner;
     private EditText editEmail;
     private EditText editPassword;
     private ProgressBar progressBar;
-    private Button login;
+    private ImageView register, login;
     private TextToSpeech tts;
     private final String EMAIL = "email";
     private final String PASSWORD = "password";
@@ -39,14 +37,23 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_main);
-        //^obv not for login idk j do the gui it's 11.37 at night oke
-
+        setContentView(R.layout.activity_main_with_login);
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if (i != TextToSpeech.ERROR){
+                    tts.setLanguage(Locale.US);
+                    speak("Diabetic Guard is a data collaboration tool to help monitor and analysis blood sugar result, please start to use the system via Register or Login");
+                }
+            }
+        });
 
         progressBar = findViewById(R.id.loginProgressBar);
         progressBar.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
+       //always sign out first when load main login page
+        mAuth.signOut();
 
         banner = this.findViewById(R.id.bannerLogo);
         banner.setOnClickListener(this);
@@ -54,53 +61,21 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
         editEmail = findViewById(R.id.loginEmail);
         editPassword = findViewById(R.id.loginPassword);
 
-        login = findViewById(R.id.loginButton);
+        login = findViewById(R.id.mainLoginButton);
         login.setOnClickListener(this);
+
+        register = findViewById(R.id.mainRegisterButton);
+        register.setOnClickListener(this);
         
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if (!sharedPreferences.contains(SESSION)){
-            editor.putBoolean(SESSION, false);
-            editor.putString(EMAIL, null);
-            editor.putString(PASSWORD, null);
+        //reset session data at main login page
+        editor.putBoolean(SESSION, false);
+        editor.putString(EMAIL, null);
+        editor.putString(PASSWORD, null);
+        editor.apply();
 
-            editor.apply();
-        }
-        else{
-            if (sharedPreferences.getBoolean(SESSION, false)){
-                String email = sharedPreferences.getString(EMAIL, "");
-                String password = sharedPreferences.getString(PASSWORD, "");
-                progressBar.setVisibility(View.VISIBLE);
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> login){
-                                if(login.isSuccessful()){
-                                    progressBar.setVisibility(View.GONE);
-                                    SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS , MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                    if (!sharedPreferences.getBoolean(SESSION, false)){
-                                        editor.putBoolean(SESSION, true);
-                                        editor.putString(EMAIL, email);
-                                        editor.putString(PASSWORD, password);
-
-                                        editor.apply();
-                                    }
-
-                                    Toast.makeText(LoginUser.this, "Welcome", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(LoginUser.this, HomePage.class));
-                                }
-                                else{
-                                    Toast.makeText(LoginUser.this, "Please check your credentials", Toast.LENGTH_LONG).show();
-                                    speak("Please check your credentials");
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            }
-                        });
-            }
-        }
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -111,17 +86,15 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
             }
         });
 
-
-
     }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.bannerLogo:
-                startActivity(new Intent(LoginUser.this, MainActivity.class));
-                break;
-            case R.id.loginButton:
+            case R.id.mainLoginButton:
                 loginUser();
+                break;
+            case R.id.mainRegisterButton:
+                startActivity(new Intent(this, RegisterUser.class));
                 break;
         }
     }
@@ -161,11 +134,11 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
                                 editor.apply();
                             }
 
-                            Toast.makeText(LoginUser.this, "Welcome", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(LoginUser.this, HomePage.class));
+                            Toast.makeText(MainActivityLogin.this, "Welcome", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(MainActivityLogin.this, HomePage.class));
                         }
                         else{
-                            Toast.makeText(LoginUser.this, "Please check your credentials", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivityLogin.this, "Please check your credentials", Toast.LENGTH_LONG).show();
                             speak("Please check your credentials");
                             progressBar.setVisibility(View.GONE);
                         }

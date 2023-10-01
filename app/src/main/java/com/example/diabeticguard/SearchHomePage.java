@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,8 @@ import java.util.Locale;
 
 public class SearchHomePage extends AppCompatActivity implements View.OnClickListener{
 
-    public TextView displayText, displayButton, displayLogo;
+    public ImageView bannerLogo;
+    public TextView displayText, displayButton;
     public EditText medicineText;
     String medicineName;
     MedicineDatabase Medicine;
@@ -66,8 +68,8 @@ public class SearchHomePage extends AppCompatActivity implements View.OnClickLis
         displayButton = findViewById(R.id.searchHomePageButton);
         displayButton.setOnClickListener(this);
 
-        displayLogo = findViewById(R.id.searchHomePageLogo);
-        displayLogo.setOnClickListener(this);
+        bannerLogo = findViewById(R.id.bannerLogo);
+        bannerLogo.setOnClickListener(this);
 
         medicineText = findViewById(R.id.searchHomePageText);
     }
@@ -75,7 +77,7 @@ public class SearchHomePage extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.searchHomePageLogo:
+            case R.id.bannerLogo:
                 startActivity(new Intent(SearchHomePage.this, HomePage.class));
                 break;
             case R.id.searchHomePageButton:

@@ -12,7 +12,8 @@ import java.util.Locale;
 
 public class HomePage extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView bannerLogo,displayStandard, displayChart, uploadToDB, searchButton, scanButton;
+    private ImageView bannerLogo,displayStandard, displayChart,
+            uploadToDB, searchButton, scanButton, mealLogo;
 
     private TextToSpeech tts;
 
@@ -46,6 +47,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
 
         scanButton = findViewById(R.id.homePageScan);
         scanButton.setOnClickListener(this);
+
+        mealLogo = findViewById(R.id.homePageMeal);
+        mealLogo.setOnClickListener(this);
     }
 
     @Override
@@ -58,7 +62,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
                 startActivity(new Intent(HomePage.this, CameraHomePage.class));
                 break;
             case R.id.homePageSearch:
-                startActivity(new Intent(HomePage.this, SearchHomePage.class));
+                //startActivity(new Intent(HomePage.this, SearchHomePage.class));
+                startActivity(new Intent(HomePage.this, CouponPage.class));
                 break;
             case R.id.homePageViewChart:
                 startActivity(new Intent(this, DisplayBloodSugarChartPage.class));
@@ -68,6 +73,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
                 break;
             case R.id.homePageViewStandard:
                 startActivity(new Intent(this, DisplayStandardPage.class));
+                break;
+            case R.id.homePageMeal:
+                startActivity(new Intent(this, MealPage.class));
                 break;
         }
     }

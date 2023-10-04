@@ -62,8 +62,8 @@
 
                     <ImageView
                         android:id="@+id/homePageViewStandard"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:contentDescription="@string/app_name"
@@ -98,8 +98,8 @@
 
                     <ImageView
                         android:id="@+id/homePageViewChart"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:contentDescription="@string/app_name"
@@ -134,8 +134,8 @@
 
                     <ImageView
                         android:id="@+id/homePageUpload"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:contentDescription="@string/app_name"
@@ -170,8 +170,8 @@
 
                     <ImageView
                         android:id="@+id/homePageScan"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:contentDescription="Scan"
@@ -206,8 +206,8 @@
 
                     <ImageView
                         android:id="@+id/homePageSearch"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:contentDescription="Search"
@@ -219,7 +219,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Search More"
+                        android:text="Coupons Center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -233,6 +233,31 @@
                 android:layout_rowWeight="1"
                 app:cardBackgroundColor="@color/teal_200"
                 app:cardCornerRadius="40dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/homePageMeal"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Meal Plan"
+                        android:src="@drawable/meal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Meal Advisor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </GridLayout>

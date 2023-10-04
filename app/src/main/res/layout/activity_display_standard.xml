@@ -11,6 +11,7 @@
         android:layout_height="200dp"
         android:background="@drawable/logo_bg_view" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,15 +36,48 @@
             android:textColor="@color/red_dark"
             android:textStyle="bold"
             />
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight = "1">
+        <!-- Here you put the rest of your current view-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/displayStandard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp"
+                    android:layout_gravity="top"
+                    android:gravity="top"
+                    android:layout_margin="10dp"
+                    android:contentDescription="Blood Sugar Level Standard"
+                    android:src="@drawable/normal_blood_sugar_levels_chart" />
 
-        <ImageView
-            android:id="@+id/displayStandard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:contentDescription="Blood Sugar Level Standard"
-            android:src="@drawable/blood_sugar_standard" />
+                <ImageView
+                    android:id="@+id/displayStandard2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="400dp"
+                    android:layout_gravity="top"
+                    android:gravity="top"
+                    android:layout_margin="10dp"
+                    android:contentDescription="Youth Blood Sugar Level Standard"
+                    android:src="@drawable/blood_sugar_levels_by_age"
+                    app:layout_constraintTop_toBottomOf="@+id/displayStandard" />
+
+                <ImageView
+                    android:id="@+id/displayStandard3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="400dp"
+                    android:layout_gravity="top"
+                    android:gravity="top"
+                    android:layout_margin="10dp"
+                    android:contentDescription="Pregnant Blood Sugar Level Standard"
+                    android:src="@drawable/pregnant_blood_sugar_levels"
+                    app:layout_constraintTop_toBottomOf="@+id/displayStandard2" />
+            </LinearLayout>>
+        </ScrollView>
 
     </LinearLayout>
 

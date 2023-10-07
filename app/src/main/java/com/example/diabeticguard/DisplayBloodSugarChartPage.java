@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -39,6 +40,9 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
     private ArrayList<Entry> data;
     private List<String> datetimes;
     private List<Integer> levels;
+    private ImageView bannerLogo;
+
+    private String[] status =  {"Normal <100", "Prediabetic 100-125", "Diabetic >126"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
 
         // Initializing the data list for chart entries
         data = new ArrayList<>();
+
+        bannerLogo = findViewById(R.id.bannerLogo);
+        bannerLogo.setOnClickListener(this);
 
         // Creating a LineDataSet with the data and a label for the legend
         lineDataSet = new LineDataSet(data, "Blood Sugar Level Tracking");
@@ -126,13 +133,8 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bannerLogo:
-                startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivityLogin.class));
+                startActivity(new Intent(DisplayBloodSugarChartPage.this, HomePage.class));
                 break;
-//            case R.id.displayChartButton:
-//                //TODO
-//                startActivity(new Intent(DisplayBloodSugarChartPage.this, MainActivity.class));
-//
-//                break;
         }
     }
 
@@ -148,6 +150,7 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
             // Flag to skip the first line of the CSV file that is header
             String mostRecent;
             boolean isFirstLine = true;
+            int latest_level = 100;
             while ((nextLine = reader.readNext()) != null) {
                 if (isFirstLine) {
                     // Skiping the first line header of the CSV file
@@ -165,11 +168,27 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
 
                     addEntryToChart(date, time, level);
 
-                    TextView banner2Text2 = findViewById(R.id.banner2Text2);
+                    latest_level = level;
 
-                    banner2Text2.setText(String.valueOf(level));
                 }
             }
+            //set dynamic text and color value based on latest_level value
+            TextView banner2Text2 = findViewById(R.id.banner2Text2);
+            banner2Text2.setText(String.valueOf(latest_level) + " mmol/L");
+
+            TextView banner2Text3 = findViewById(R.id.banner2Text3);
+
+            if( latest_level <= 100) {
+                banner2Text3.setText(status[0]);
+                banner2Text3.setTextColor(getResources().getColor(R.color.teal_200, null));
+            }else if( latest_level > 100 && latest_level < 126) {
+                banner2Text3.setText(status[1]);
+                banner2Text3.setTextColor(getResources().getColor(R.color.yellow, null));
+            }else{
+                banner2Text3.setText(status[2]);
+                banner2Text3.setTextColor(getResources().getColor(R.color.red_dark, null));
+            }
+
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }

@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 public class UploadToDBPage extends ListActivity implements View.OnClickListener {
 //  public class UploadToDBPage1 extends AppCompatActivity implements View.OnClickListener{
 
+    ImageView bannerLogo;
     TextView lbl;
     DBController controller;
     //DBHelper controller;
@@ -53,10 +55,12 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println( "*******Inside UploadToDBPage.onCreate*****");
         Log.i( "","*******Inside UploadToDBPage.onCreate*****");
 
         setContentView(R.layout.activity_upload_to_db);
+        bannerLogo = findViewById(R.id.bannerLogo);
+        bannerLogo.setOnClickListener(this);
+
        //controller = DBController.getInstance(this);
         controller = new DBController(context);
         lbl = (TextView) findViewById(R.id.txtresulttext);
@@ -201,7 +205,11 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.bannerLogo:
+                startActivity(new Intent(UploadToDBPage.this, HomePage.class));
+                break;
+        }
     }
 
     private ArrayList<ContentValues> readDataFromCSV() {

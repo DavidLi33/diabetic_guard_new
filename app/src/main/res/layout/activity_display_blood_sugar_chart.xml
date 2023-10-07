@@ -1,108 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.diabeticguard.DisplayBloodSugarChartPage">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.diabeticguard.MealPage" >
 
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="340dp"
-        android:layout_height="435dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.625"
-        tools:ignore="MissingConstraints" />
-
-    <RelativeLayout
-        android:id="@+id/bannerContainer"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="120dp"
+        android:background="@drawable/logo_bg_view" />
 
-        <!-- Top Banner -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top">
+        <ImageView
+            android:id="@+id/bannerLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/diabetic_guard_logo" />
         <TextView
-            android:id="@+id/bannerText"
-            android:layout_width="match_parent"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
             android:text="Blood Sugar Level Tracking"
-            android:textColor="#dddddd"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.483"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.625" />
-    </RelativeLayout>
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="24sp"
+            android:textColor="@color/red_dark"
+            android:textStyle="bold"
+            />
 
-    <RelativeLayout
-        android:id="@+id/bannerContainer2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/darkish_blue"
-        app:layout_constraintTop_toBottomOf="@id/bannerContainer">
-
-        <!-- Banner displaying "Most Recent Measurement" -->
-        <TextView
-            android:id="@+id/banner2Text1"
+        <RelativeLayout
+            android:id="@+id/bannerContainer2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="  Most Recent Measurement"
-            android:textAlignment="viewStart"
+            android:background="@color/darkish_blue"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <!-- Banner displaying "Most Recent Measurement" -->
+            <TextView
+                android:id="@+id/banner2Text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Most Recent Measurement"
+                android:textColor="#dddddd"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.483"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.625" />
+
+            <!--displaying the most recent measurement -->
+            <TextView
+                android:id="@+id/banner2Text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/banner2Text1"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="This is a variable"
+                android:fontFamily="sans-serif-light"
+                android:padding="1dp"
+                android:text="150 mmol/L"
+                android:textColor="#ffffff"
+                android:textSize="36dp" />
+
+            <!--units (mmol/L) -->
+            <TextView
+                android:id="@+id/banner2Text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/banner2Text2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="1dp"
+                android:fontFamily="sans-serif-light"
+                android:padding="1dp"
+                android:text="Normal, Warning, Risk"
+                android:textColor="@color/teal_200"
+                android:textSize="28dp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
 
 
-            android:textColor="#dddddd"
-            android:textSize="16sp"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="340dp"
+            android:layout_height="435dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.483"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.625" />
+            app:layout_constraintVertical_bias="0.625"
+            tools:ignore="MissingConstraints" />
 
-        <!--displaying the most recent measurement -->
-        <TextView
-            android:id="@+id/banner2Text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/banner2Text1"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="This is a variable"
-            android:fontFamily="sans-serif-light"
-            android:padding="1dp"
-            android:text="150"
-            android:textColor="#ffffff"
-            android:textSize="48sp" />
 
-        <!--units (mmol/L) -->
-        <TextView
-            android:id="@+id/banner2Text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/banner2Text2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="1dp"
-            android:fontFamily="sans-serif-light"
-            android:padding="1dp"
-            android:text="mmol/L"
-            android:textColor="#ffffff"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</RelativeLayout>

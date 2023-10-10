@@ -47,18 +47,30 @@
             <ImageView
                 android:id="@+id/cameraHomePageImage"
                 android:layout_width="331dp"
-                android:layout_height="341dp"
+                android:layout_height="300dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/pinkcamera2" />
+            <TextView
+                android:id="@+id/displayResult"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/cameraHomePageDictate"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/red_dark"
+                android:textSize="20sp"
+                android:textStyle="italic|bold"/>
 
             <Button
                 android:id="@+id/cameraHomePageDictate"
                 android:layout_width="240dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="24dp"
+                android:layout_height="50dp"
                 android:backgroundTint="#F46565"
                 android:text="DICTATE"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +81,7 @@
             <TextView
                 android:id="@+id/cameraHomePageText"
                 android:layout_width="300dp"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:backgroundTintMode="src_atop"
                 android:outlineProvider="bounds"
                 android:shadowColor="#000000"
@@ -83,9 +95,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cameraHomePageImage"
+                app:layout_constraintTop_toBottomOf="@+id/displayResult"
                 app:layout_constraintVertical_bias="0.704"
                 tools:visibility="visible" />
+
+
+
         </LinearLayout>
 
     </LinearLayout>

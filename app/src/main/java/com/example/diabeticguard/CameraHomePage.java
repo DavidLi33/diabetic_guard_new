@@ -43,13 +43,13 @@ import java.util.Locale;
 
 public class CameraHomePage extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView banner, cameraLogo;
+    private ImageView banner, displayImage;
     private Button dictate;
-    private TextView description;
+    private TextView description, displayResult;
     private Uri imageUri;
     private Text resultText;
     private MedicineDatabase medicineDatabase;
-    private ImageView display;
+
     private ActivityResultLauncher launcher;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -60,12 +60,7 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_home_page);
-        medicineDatabase = new MedicineDatabase();
-        try {
-            medicineDatabase.init(CameraHomePage.this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -80,23 +75,34 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
         banner = findViewById(R.id.bannerLogo);
         banner.setOnClickListener(this);
 
-        cameraLogo = findViewById(R.id.cameraHomePageImage);
-        cameraLogo.setOnClickListener(this);
+        displayImage = findViewById(R.id.cameraHomePageImage);
+        displayImage.setOnClickListener(this);
 
         dictate = findViewById(R.id.cameraHomePageDictate);
         dictate.setOnClickListener(this);
 
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        displayResult = findViewById(R.id.displayResult);
+        if( getIntent().getExtras() != null ) {
+            String processResult = getIntent().getExtras().getString("displayResult");
+            displayResult.setText(processResult);
+        }
+
+                launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-//                Toast.makeText(HomePage.this, "Hihi", Toast.LENGTH_SHORT).show();
-                if (result.getResultCode() == RESULT_OK && result.getData() != null){
+                Log.i( "Camera Launcher", "begin CameraHomePage.launcher.onActivityResult" );
+                Log.i( "Camera Launcher", " result.getResultCode()=" + result.getResultCode());
+                Log.i( "Camera Launcher", (result.getData()==null)?"data is null":"result has data" );
+
+                if (result.getResultCode() == RESULT_OK) {
                     Bitmap thumbnail = null;
                     try {
                         thumbnail = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                     } catch (IOException e) {
+                        Log.e("", e.getMessage());
                         e.printStackTrace();
                     }
+
                     assert thumbnail != null;
                     if (thumbnail.getWidth() <= thumbnail.getHeight()){
                         thumbnail = rotateBitmap(thumbnail, 270);
@@ -104,7 +110,7 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
                     else{
                         thumbnail = rotateBitmap(thumbnail, 90);
                     }
-                    display.setImageBitmap(thumbnail);
+                    displayImage.setImageBitmap(thumbnail);
                     String path = getRealPathFromURI(imageUri);
                     InputImage image = null;
                     try {
@@ -153,17 +159,12 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.cameraHomePageDictate:
                 if (resultText != null){
+                    Log.i( "Camera Dictate", "resultText.getText() is " + resultText.getText() );
+
                     description.setText(resultText.getText());
-                    if (medicineDatabase.getMedicine(resultText) != null){
-//                        Toast.makeText(HomePage.this, "Medicine: " + medicineDatabase.getMedicine(resultText), Toast.LENGTH_SHORT).show();
-                        Intent displayInfo = new Intent(CameraHomePage.this, DisplayUserInfo.class);
-                        displayInfo.putExtra("Text", resultText.getText());
-                        startActivity(displayInfo);
-                    }
-                    else{
-                        speak("Please take a more proper image");
-                        Toast.makeText(CameraHomePage.this, "Please take a more proper image", Toast.LENGTH_SHORT).show();
-                    }
+                    Intent displayInfo = new Intent(CameraHomePage.this, DisplayMeterInfo.class);
+                    displayInfo.putExtra("Text", resultText.getText());
+                    startActivity(displayInfo);
                 }
                 else{
                     speak("Please take an image");
@@ -175,9 +176,10 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
                 break;
         }
     }
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void takePictureAndDisplay(){
+        Log.i( "TakePicture", "begin CameraHomePage.takePictureAndDisplay");
+
         if (ContextCompat.checkSelfPermission(CameraHomePage.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{
@@ -185,10 +187,15 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE}, 225);
         }
+        Log.i("", "Build.VERSION.SDK_INT: " + Build.VERSION.SDK_INT + ",  Build.VERSION_CODES.M:" +  Build.VERSION_CODES.M);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             //Check permissions for Android 6.0+
             if(!checkExternalStoragePermission()){
-                return;
+                //try again
+                if(!checkExternalStoragePermission()) {
+                    Toast.makeText(CameraHomePage.this, "CameraHomePage Permission not granted", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         }
         ContentValues values = new ContentValues();
@@ -196,9 +203,14 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
         values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis());
         imageUri = getContentResolver().insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        Log.i("", "imageUri: " + imageUri );
+
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePicture.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         launcher.launch(takePicture);
+
+        Log.i( "", "end CameraHomePage.takePictureAndDisplay");
     }
     private static Bitmap rotateBitmap(Bitmap img, int degree){
         Matrix matrix = new Matrix();
@@ -215,12 +227,19 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
         return cursor.getString(column_index);
     }
     private boolean checkExternalStoragePermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+         String readImagePermission = "";
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+             readImagePermission = Manifest.permission.READ_MEDIA_IMAGES;
+        else
+             readImagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        Log.i("Camera Permission", "check readImagePermission: "+ readImagePermission );
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this, readImagePermission);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission not granted.");
+            Log.i("Camera Permission", "CameraHomePage Permission not granted.");
             speak("You have not granted camera permission");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 225);
+            ActivityCompat.requestPermissions(this, new String[]{readImagePermission}, 225);
+
         } else {
             Log.i(TAG, "You already have permission!");
             return true;
@@ -238,11 +257,5 @@ public class CameraHomePage extends AppCompatActivity implements View.OnClickLis
         }
         super.onPause();
     }
-//    private static File getOutputMediaFile(){
-//        String fileName = "temp";
-//        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Medicine";
-//        File temp = new File(path,fileName+".jpg");
-//
-//        return temp;
-//    }
+
 }

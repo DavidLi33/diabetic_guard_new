@@ -83,11 +83,12 @@ public class DBController extends SQLiteOpenHelper {
             do {
                 //Id, Company,Name,Price
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("a", cursor.getString(0));
-                map.put("b", cursor.getString(1));
-                map.put("c", cursor.getString(2));
+                //cursor no.0 is id, don't need to display
+                map.put("a", cursor.getString(1));
+                map.put("b", cursor.getString(2));
+                map.put("c", cursor.getString(3));
                 trackList.add(map);
-                Log.i("dataofList", cursor.getString(0) + "," + cursor.getString(1) + "," + cursor.getString(2));
+                Log.i("dataofList", cursor.getString(1) + "," + cursor.getString(2) + "," + cursor.getString(3));
             } while (cursor.moveToNext());
         }
         // at last closing our cursor and returning array list.

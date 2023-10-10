@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.diabeticguard.DisplayMeterInfo" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/logo_bg_view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top">
+        <ImageView
+            android:id="@+id/bannerLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/diabetic_guard_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scanned Information"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="24sp"
+            android:textColor="@color/red_dark"
+            android:textStyle="bold"
+            />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:columnCount="2"
+            android:rowCount="6"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:text="Blood Sugar Level: "
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#F46565"
+                android:textSize="16sp"
+                android:typeface="monospace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1" />
+
+            <EditText
+                android:id="@+id/inputLevel"
+                android:gravity="left"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:text="100"
+                android:textColor="#F46565"
+                android:textSize="16sp"
+                android:typeface="monospace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintTop_toBottomOf="@+id/bannerLogo" />
+
+            <TextView
+                android:text="Collection Date: "
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#F46565"
+                android:textSize="16sp"
+                android:typeface="monospace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintTop_toBottomOf="@+id/bannerLogo" />
+
+            <EditText
+                android:id="@+id/inputDate"
+                android:gravity="left"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:text="10/09/2023"
+                android:textColor="#F46565"
+                android:textSize="16sp"
+                android:typeface="monospace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintTop_toBottomOf="@+id/inputLevel" />
+
+            <TextView
+                android:text="Collection Time: "
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#F46565"
+                android:textSize="16sp"
+                android:typeface="monospace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintTop_toBottomOf="@+id/bannerLogo" />
+
+            <EditText
+                android:id="@+id/inputTime"
+                android:gravity="left"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:text="10:00:00"
+                android:textColor="#F46565"
+                android:textSize="16sp"
+                android:typeface="monospace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintTop_toBottomOf="@+id/inputDate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Please update the above data if not accurate"
+            android:textColor="#F46565"
+            android:layout_gravity="left"
+            android:textSize="16sp"
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_columnSpan="2"
+            app:layout_constraintTop_toBottomOf="@+id/inputTime" />
+
+    <TextView
+        android:id="@+id/UserInfoQuery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Will you take this record?"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_columnSpan="2"
+        app:layout_constraintTop_toBottomOf="@+id/inputTime" />
+
+            <Button
+                android:id="@+id/UserInfoYes"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:backgroundTint="#36DF54"
+                android:text="YES"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/UserInfoQuery"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintVertical_bias="0.51" />
+
+            <Button
+                android:id="@+id/UserInfoNo"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:backgroundTint="#EC3535"
+                android:text="NO"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/UserInfoQuery"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:layout_constraintVertical_bias="0.51" />
+        </GridLayout>
+
+    </LinearLayout>
+</RelativeLayout>

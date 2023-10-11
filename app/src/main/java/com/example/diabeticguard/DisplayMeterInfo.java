@@ -37,7 +37,6 @@ public class DisplayMeterInfo extends AppCompatActivity implements View.OnClickL
     private ImageView bannerLogo;
     private Button yesButton, noButton;
     private EditText inputLevel, inputDate, inputTime;
-    private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private String inputText;
     private MeterDataParser meterParser;
@@ -59,7 +58,6 @@ public class DisplayMeterInfo extends AppCompatActivity implements View.OnClickL
 
         controller = new DBController(this);
 
-        db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         yesButton = findViewById(R.id.UserInfoYes);
@@ -73,7 +71,6 @@ public class DisplayMeterInfo extends AppCompatActivity implements View.OnClickL
         inputTime = findViewById(R.id.inputTime);
 
         inputText = getIntent().getExtras().getString("Text");
-        //TODO
         Log.i( "Camera Dictate Info", "input text is " + inputText );
         meterParser = new MeterDataParser(inputText);
         myLevel = meterParser.getLevel();
@@ -153,8 +150,15 @@ public class DisplayMeterInfo extends AppCompatActivity implements View.OnClickL
             contentValues.put(DBController.colLevel, theLevel);
             contentValues.put(DBController.colDate, theDate);
             contentValues.put(DBController.colTime, theTime);
+            contentValues.put(DBController.colUserId, currentUser.getUid());
 
-            db.insert(DBController.tableTrackName, null, contentValues);
+            //if existing data found, update level value, otherwise insert as new data
+            String foundId = controller.foundMatchedData(theDate, theTime, currentUser.getUid());
+            if( foundId == null || foundId.isEmpty() ) {
+                db.insert(DBController.tableTrackName, null, contentValues);
+            }else {
+                db.update(DBController.tableTrackName, contentValues,"_id = ?", new String[]{foundId});
+            }
 
             Log.i("Camera Dictate", "Successfully stored scanned data.");
             isSucceeded = true;

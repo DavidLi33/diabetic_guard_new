@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.diabeticguard.db.DBController;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,18 +25,18 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class DisplayBloodSugarChartPage extends AppCompatActivity implements View.OnClickListener {
 
+    DBController controller;
+    FirebaseUser currentUser;
     private LineChart lineChart;
     private LineDataSet lineDataSet;
     private ArrayList<Entry> data;
@@ -49,6 +51,8 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_blood_sugar_chart);
 
+        controller = new DBController(this);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         lineChart = findViewById(R.id.lineChart);
 
@@ -93,7 +97,7 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
         datetimes = new ArrayList<>();
         levels = new ArrayList<>();
 
-        readDataFromCSV();
+        readDataFromDB();
 
         setupChart();
 
@@ -110,7 +114,7 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
                     Integer levelNum = levels.get(index);
 
                     // Displaying toast message with the selected product name
-                    Toast.makeText(DisplayBloodSugarChartPage.this, levelNum, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(DisplayBloodSugarChartPage.this, levelNum, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -138,66 +142,50 @@ public class DisplayBloodSugarChartPage extends AppCompatActivity implements Vie
         }
     }
 
-    private void readDataFromCSV() {
-        Resources res = getResources();
-        // Make Sure You Specify Your CSV File Name in My Case the CSV File Name is gfg
-        InputStream inputStream = res.openRawResource(R.raw.blood_sugar_track_1);
-        //InputStream inputStream = res.openRawResource(R.raw.salesperyear);
-
+    private void readDataFromDB() {
+        ArrayList<HashMap<String, String>> resultMaps = new ArrayList<HashMap<String, String>>();
+        int latest_level = 100;
         try {
-            CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-            String[] nextLine;
-            // Flag to skip the first line of the CSV file that is header
-            String mostRecent;
-            boolean isFirstLine = true;
-            int latest_level = 100;
-            while ((nextLine = reader.readNext()) != null) {
-                if (isFirstLine) {
-                    // Skiping the first line header of the CSV file
-                    isFirstLine = false;
-                    continue;
-                }
-                if (nextLine.length >= 3) {
-                    // Extracting the year from the CSV data
-                    String date = nextLine[0].trim();
-                    String time = nextLine[1].trim();
-                    int level = Integer.parseInt( nextLine[2].trim() );
-                    // Extract and parsing the sales value parsing because the sales value
-                    // is written with comma like that (12,500)
-                   // float sales = Float.parseFloat(nextLine[1].replace(",", "").trim());
+            resultMaps = controller.getAllTracks(currentUser.getUid());
 
-                    addEntryToChart(date, time, level);
+            for( HashMap<String, String> myMap : resultMaps ) {
+                String date = myMap.get("date");
+                String time = myMap.get("time");
+                int level = Integer.parseInt(  myMap.get("level") );
 
-                    latest_level = level;
-
-                }
+                addEntryToChart(date, time, level);
+                latest_level = level;
             }
+
             //set dynamic text and color value based on latest_level value
-            TextView banner2Text2 = findViewById(R.id.banner2Text2);
-            banner2Text2.setText(String.valueOf(latest_level) + " mmol/L");
+            setNoticeBannerText( latest_level);
 
-            TextView banner2Text3 = findViewById(R.id.banner2Text3);
-
-            if( latest_level <= 100) {
-                banner2Text3.setText(status[0]);
-                banner2Text3.setTextColor(getResources().getColor(R.color.teal_200, null));
-            }else if( latest_level > 100 && latest_level < 126) {
-                banner2Text3.setText(status[1]);
-                banner2Text3.setTextColor(getResources().getColor(R.color.yellow, null));
-            }else{
-                banner2Text3.setText(status[2]);
-                banner2Text3.setTextColor(getResources().getColor(R.color.red_dark, null));
-            }
-
-        } catch (IOException | CsvValidationException e) {
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage() );
             e.printStackTrace();
+        }
+    }
+
+    private void setNoticeBannerText( int latest_level ) {
+        //set dynamic text and color value based on latest_level value
+        TextView banner2Text2 = findViewById(R.id.banner2Text2);
+        banner2Text2.setText(String.valueOf(latest_level) + " mmol/L");
+        TextView banner2Text3 = findViewById(R.id.banner2Text3);
+        if( latest_level <= 100) {
+            banner2Text3.setText(status[0]);
+            banner2Text3.setTextColor(getResources().getColor(R.color.teal_200, null));
+        }else if( latest_level > 100 && latest_level < 126) {
+            banner2Text3.setText(status[1]);
+            banner2Text3.setTextColor(getResources().getColor(R.color.yellow, null));
+        }else{
+            banner2Text3.setText(status[2]);
+            banner2Text3.setTextColor(getResources().getColor(R.color.red_dark, null));
         }
     }
 
 
     private void addEntryToChart(String date, String time, int level ) {
         data.add(new Entry(data.size(), level));
-
         // Storing year and product names for each data entry
         //TODO datetimes.add(date + time);
         datetimes.add(date );

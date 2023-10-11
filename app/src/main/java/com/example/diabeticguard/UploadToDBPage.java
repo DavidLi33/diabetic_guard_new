@@ -26,6 +26,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.diabeticguard.db.DBController;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -43,7 +45,7 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
     ImageView bannerLogo;
     TextView lbl;
     DBController controller;
-    //DBHelper controller;
+    FirebaseUser currentUser;
     Button btnimport;
     ListView lv;
     final Context context = this;
@@ -58,11 +60,13 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
         Log.i( "","*******Inside UploadToDBPage.onCreate*****");
 
         setContentView(R.layout.activity_upload_to_db);
+
+        controller = new DBController(context);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         bannerLogo = findViewById(R.id.bannerLogo);
         bannerLogo.setOnClickListener(this);
 
-       //controller = DBController.getInstance(this);
-        controller = new DBController(context);
         lbl = (TextView) findViewById(R.id.txtresulttext);
         btnimport = (Button) findViewById(R.id.btnupload);
         lv = getListView();
@@ -86,11 +90,11 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
             }
         });
 
-        myList = controller.getAllTracks();
+        myList = controller.getAllTracks(currentUser.getUid());
         if (myList.size() != 0) {
             ListView lv = getListView();
             ListAdapter adapter = new SimpleAdapter(UploadToDBPage.this, myList,
-                    R.layout.lst_template, new String[]{"a", "b", "c"}, new int[]{
+                    R.layout.lst_template, new String[]{"date", "time", "level"}, new int[]{
                     R.id.txtDate, R.id.txtTime, R.id.txtLevel});
             setListAdapter(adapter);
             lbl.setText("Display Results");
@@ -116,11 +120,12 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 
            //     filepath = realPath + "/Download/blood_sugar_track_0.csv";
 
-                Log.e("New File path", filepath);
+                Log.i("UPLOAD", "New File path: " + filepath);
                 controller = new DBController(this);
                 SQLiteDatabase db = controller.getWritableDatabase();
-                //TODO why delete
-                db.execSQL("delete from " + DBController.tableTrackName);
+
+                // delete for reset, start from beginning
+                //db.execSQL("delete from " + DBController.tableTrackName);
 
                 try {
 
@@ -134,30 +139,26 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 //                            BufferedReader buffer = new BufferedReader(file);
 //                            String line = "";
 //                            ContentValues contentValues = new ContentValues();
-                            //String line = "11/1/2003,8:45:00,136";
 
                             ArrayList<ContentValues> contentValuesList = readDataFromCSV();
 
                             db.beginTransaction();
 
                             for( ContentValues contentValues : contentValuesList ) {
+                                //execute updating instead of insertijng if the same date/time exists in db
+                                String theDate = (String)contentValues.get(DBController.colDate);
+                                String theTime = (String)contentValues.get(DBController.colTime);
+                                String theLevel = (String)contentValues.get(DBController.colLevel);
 
-//                            while ((line = buffer.readLine()) != null) {
-//
-//                                Log.i("line", line);
-//                                String[] str = line.split(",", 3);  // defining 3 columns with null or blank field //values acceptance
-//
-//                                String date = str[0].toString();
-//                                String time = str[1].toString();
-//                                String level = str[2].toString();
-//
-//                                contentValues.put(DBController.colDate, date);
-//                                contentValues.put(DBController.colTime, time);
-//                                contentValues.put(DBController.colLevel, level);
-                                db.insert(DBController.tableTrackName, null, contentValues);
-
-                                lbl.setText("Successfully Updated Database.");
-                                Log.i("Import", "Successfully Updated Database.");
+                                //if existing data found, update level value, otherwise insert as new data
+                                String foundId = controller.foundMatchedData(theDate, theTime, currentUser.getUid());
+                                if( foundId == null || foundId.isEmpty() ) {
+                                    db.insert(DBController.tableTrackName, null, contentValues);
+                                }else {
+                                    db.update(DBController.tableTrackName, contentValues,"_id = ?", new String[]{foundId});
+                                }
+                                 lbl.setText("Successfully Updated Database.");
+                                Log.i("UPLOAD", "Successfully Updated Database.");
                             }
                             db.setTransactionSuccessful();
 
@@ -165,8 +166,6 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 
                         } catch (SQLException e) {
                             Log.e("SQLError", e.getMessage().toString());
-//                        } catch (IOException e) {
-//                            Log.e("IOException", e.getMessage().toString());
                         }
                     } else {
                         Log.e("RESULT CODE", "InValid");
@@ -184,7 +183,7 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 
         }
 
-        myList = controller.getAllTracks();
+        myList = controller.getAllTracks(currentUser.getUid());
 
         if (myList.size() != 0) {
 
@@ -192,9 +191,8 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 
             ListAdapter adapter = new SimpleAdapter(UploadToDBPage.this, myList,
 
-                    R.layout.lst_template, new String[]{"a", "b", "c"}, new int[]{
+                    R.layout.lst_template, new String[]{"date", "time", "level"}, new int[]{
                     R.id.txtDate, R.id.txtTime, R.id.txtLevel});
-
 
             setListAdapter(adapter);
 
@@ -216,7 +214,8 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
         ArrayList<ContentValues> contentValuesList = new ArrayList<ContentValues>();
         Resources res = getResources();
         // Make Sure You Specify Your CSV File Name in My Case the CSV File Name is gfg
-        InputStream inputStream = res.openRawResource(R.raw.blood_sugar_track_1);
+        InputStream inputStream = res.openRawResource(R.raw.blood_sugar_track_0);
+        String userId = currentUser.getUid();
 
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
@@ -239,6 +238,7 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
                     contentValues.put(DBController.colDate, date);
                     contentValues.put(DBController.colTime, time);
                     contentValues.put(DBController.colLevel, level);
+                    contentValues.put(DBController.colUserId, userId);
                     contentValuesList.add( contentValues );
                 }
             }

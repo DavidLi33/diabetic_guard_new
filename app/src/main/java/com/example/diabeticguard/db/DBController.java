@@ -23,6 +23,8 @@ public class DBController extends SQLiteOpenHelper {
     public static String colDate = "Date";
     public static String colTime = "Time";
     public static String colLevel = "Level";
+    public static String colUserId = "UserId";
+
     public static String colIsFasting = "IsFasting";
 
 //    public static String tableProfileName = "tblProfile";
@@ -35,24 +37,21 @@ public class DBController extends SQLiteOpenHelper {
 
     public DBController(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
-        this.getWritableDatabase(); //Force database open
+        SQLiteDatabase db = this.getWritableDatabase(); //Force database open
+
+//        //TODO one time
+//        String query1 = "DROP TABLE IF EXISTS " + tableTrackName;
+//        db.execSQL(query1);
+//        onCreate(db);
     }
-//    public static DBController getInstance(Context context) {
-//        if (instance==null) {
-//            instance = new DBController(context);
-//        }
-//        return instance;
-//    }
-
-
 
     @Override
     public void onCreate(SQLiteDatabase database) {
 
-        String createTableSql, profileQuery, stardardQuery;
+        String createTableSql;
 
         createTableSql = "CREATE TABLE IF NOT EXISTS " + tableTrackName + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + colDate + " TEXT, " + colTime +
-                " TEXT, " + colLevel + " TEXT ); ";
+                " TEXT, " + colLevel + " TEXT, " + colUserId + " TEXT ); ";
         Log.i("create Query", createTableSql);
 
         database.execSQL(createTableSql);
@@ -62,19 +61,19 @@ public class DBController extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
-//        String query;
-//        query = "DROP TABLE IF EXISTS " + tableTrackName;
-//        database.execSQL(query);
-//        onCreate(database);
+        String query;
+        query = "DROP TABLE IF EXISTS " + tableTrackName;
+        database.execSQL(query);
+        onCreate(database);
     }
 
 
-    public ArrayList<HashMap<String, String>> getAllTracks() {
+    public ArrayList<HashMap<String, String>> getAllTracks(String userId) {
 
         ArrayList<HashMap<String, String>> trackList;
         trackList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM " + tableTrackName;
-        //SQLiteDatabase database = this.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + tableTrackName + " where UserId = \"" + userId + "\" order by Date, Time";
+
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -84,17 +83,35 @@ public class DBController extends SQLiteOpenHelper {
                 //Id, Company,Name,Price
                 HashMap<String, String> map = new HashMap<String, String>();
                 //cursor no.0 is id, don't need to display
-                map.put("a", cursor.getString(1));
-                map.put("b", cursor.getString(2));
-                map.put("c", cursor.getString(3));
+                map.put("date", cursor.getString(1));
+                map.put("time", cursor.getString(2));
+                map.put("level", cursor.getString(3));
+                map.put("userId", cursor.getString(4));
                 trackList.add(map);
-                Log.i("dataofList", cursor.getString(1) + "," + cursor.getString(2) + "," + cursor.getString(3));
+                Log.i("dataofList", cursor.getString(1) + "," + cursor.getString(2) + "," + cursor.getString(3) +  cursor.getString(4));
             } while (cursor.moveToNext());
         }
         // at last closing our cursor and returning array list.
         cursor.close();
         return trackList;
 
+    }
+
+    public String foundMatchedData(String date, String time, String userId) {
+        String returnId = "";
+        ArrayList<HashMap<String, String>> trackList;
+        trackList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT _id FROM " + tableTrackName +
+                " where " + colUserId + " = \"" + userId + "\"" +
+                " and "+ colDate +" = \"" + date + "\"" +
+                " and "+ colTime + " = \"" + time + "\"";
+
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            returnId = cursor.getString(0);
+        }
+        return returnId;
     }
 
 }

@@ -26,7 +26,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener{
             public void onInit(int i) {
                 if (i != TextToSpeech.ERROR){
                     tts.setLanguage(Locale.US);
-                    speak("Welcome! At home dashboard, can view standard, upload your records and track blood sugar level, as well as scan to load medicines and search them");
+                    speak("Welcome! At home dashboard, can view standard, scan the meter record screen to load data, upload your history record file and track blood sugar level, as well as search online discount");
                 }
             }
         });

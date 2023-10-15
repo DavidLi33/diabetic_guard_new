@@ -50,6 +50,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
         banner = this.findViewById(R.id.bannerLogo);
         banner.setOnClickListener(this);
 
@@ -62,8 +63,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         editBirthYear = findViewById(R.id.birthyear);
         editGender = findViewById(R.id.gender);
-
-        //TODO need to store other user profile in database, eg. name, age, gender ...
 
         progressBar = findViewById(R.id.registerProgressBar);
     }

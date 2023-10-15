@@ -174,7 +174,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
-                        android:contentDescription="Scan"
+                        android:contentDescription="Scan Meter"
                         android:src="@drawable/pinkcamera" />
 
                     <TextView
@@ -183,7 +183,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Scan"
+                        android:text="Scan Meter"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -219,7 +219,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Coupons Center"
+                        android:text="Coupon Center"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>

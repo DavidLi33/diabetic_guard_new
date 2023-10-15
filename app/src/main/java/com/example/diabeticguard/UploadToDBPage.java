@@ -1,18 +1,20 @@
 package com.example.diabeticguard;
 
-import static android.app.PendingIntent.getActivity;
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.Manifest;
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.diabeticguard.db.DBController;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +42,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UploadToDBPage extends ListActivity implements View.OnClickListener {
-//  public class UploadToDBPage1 extends AppCompatActivity implements View.OnClickListener{
 
     ImageView bannerLogo;
     TextView lbl;
@@ -57,7 +58,6 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i( "","*******Inside UploadToDBPage.onCreate*****");
 
         setContentView(R.layout.activity_upload_to_db);
 
@@ -74,12 +74,8 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
 
             @Override
             public void onClick(View v) {
-                System.out.println( "*******Inside UploadToDBPage.onClick*****");
-                Log.i( "","*******Inside UploadToDBPage.onClick*****");
 
                 Intent fileintent = new Intent(Intent.ACTION_GET_CONTENT);
-                //Intent fileintent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-
                 fileintent.setType("*/*");
 
                 try {
@@ -109,38 +105,35 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
         switch (requestCode) {
 
             case requestcode:
+                FileReader fileReader = null;
+                Uri uri = data.getData();
+                Log.i("UPLOAD", uri.toString());
 
-                String realPath = Environment.getExternalStorageDirectory().toString();
-
-                String filepath = data.getData().getPath();
-                Log.e("File path", filepath);
-
-                if (filepath.contains("/root_path"))
-                    filepath = filepath.replace("/root_path", "");
-
-           //     filepath = realPath + "/Download/blood_sugar_track_0.csv";
-
-                Log.i("UPLOAD", "New File path: " + filepath);
                 controller = new DBController(this);
                 SQLiteDatabase db = controller.getWritableDatabase();
 
                 // delete for reset, start from beginning
-                //db.execSQL("delete from " + DBController.tableTrackName);
+                //db.execSQL("delete from " + DBController.tableTrackName + " where " + DBController.colUserId + " = \'" + currentUser.getUid() + "\'");
 
                 try {
 
                     if (resultCode == RESULT_OK) {
-                        Log.e("RESULT CODE", "OK");
+                        Log.i("RESULT CODE", "OK");
                         try {
+                            String readImagePermission = "";
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                                readImagePermission = Manifest.permission.READ_MEDIA_IMAGES;
+                            else
+                                readImagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+                            int permissionCheck = ContextCompat.checkSelfPermission(this, readImagePermission);
+                            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                                Log.i("File Permission", "UploadToDBPage Permission not granted.");
+                                ActivityCompat.requestPermissions(this, new String[]{readImagePermission}, 225);
+                            } else {
+                                Log.i(TAG, "You already have permission!");
+                            }
 
-//                            StoragePermission.verifyStoragePermissions(this);
-//
-//                            FileReader file = new FileReader(filepath);
-//                            BufferedReader buffer = new BufferedReader(file);
-//                            String line = "";
-//                            ContentValues contentValues = new ContentValues();
-
-                            ArrayList<ContentValues> contentValuesList = readDataFromCSV();
+                            ArrayList<ContentValues> contentValuesList = readDataFromCSV(uri);
 
                             db.beginTransaction();
 
@@ -178,7 +171,7 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
                     Log.e("Error", ex.getMessage().toString());
                     if (db.inTransaction())
                         db.endTransaction();
-                    Toast.makeText(UploadToDBPage.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(UploadToDBPage.this, ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
         }
@@ -210,14 +203,15 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
         }
     }
 
-    private ArrayList<ContentValues> readDataFromCSV() {
+    private ArrayList<ContentValues> readDataFromCSV(Uri uri) {
         ArrayList<ContentValues> contentValuesList = new ArrayList<ContentValues>();
-        Resources res = getResources();
+        //Resources res = getResources();
         // Make Sure You Specify Your CSV File Name in My Case the CSV File Name is gfg
-        InputStream inputStream = res.openRawResource(R.raw.blood_sugar_track_0);
-        String userId = currentUser.getUid();
+        //InputStream inputStream = res.openRawResource(R.raw.blood_sugar_track_0);
 
+        String userId = currentUser.getUid();
         try {
+            InputStream inputStream = this.getContentResolver().openInputStream(uri);
             CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
             String[] nextLine;
             // Flag to skip the first line of the CSV file that is header
@@ -240,13 +234,14 @@ public class UploadToDBPage extends ListActivity implements View.OnClickListener
                     contentValues.put(DBController.colLevel, level);
                     contentValues.put(DBController.colUserId, userId);
                     contentValuesList.add( contentValues );
+
+                    Log.i( "READ FILE in LINE", date + ", " + time + ", " + level);
                 }
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return contentValuesList;
     }
-
 
 }

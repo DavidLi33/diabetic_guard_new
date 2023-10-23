@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:19.2.0")
     implementation("com.google.firebase:firebase-database:20.0.3")
     implementation("com.google.firebase:firebase-firestore:24.0.1")
+    implementation("com.google.firebase:firebase-bom:32.4.0")
     implementation("com.opencsv:opencsv:5.8")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
